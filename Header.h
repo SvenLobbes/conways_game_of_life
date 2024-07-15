@@ -44,6 +44,11 @@ public:
 				if(grid[i][j] == 1){
 					cout << "O";
 				}
+				else if (grid[i][j] == 2)
+				{
+					cout << "*";
+
+				}
 				else{
 					cout << ".";
 				}
@@ -60,7 +65,7 @@ public:
 	{	
 		int startx = (world->grid[0].size() - 1 ) / 2 ;
 		int starty = (world->grid.size() - 1 ) / 2;
-		world->grid[starty][startx] = 1;
+		world->grid[starty][startx] = 2;
 		world->see(); // delete later only debug purposes!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 
 	}
 	/*Ruft die livingNeigbours Funktion auf f�r jedes Feld.
