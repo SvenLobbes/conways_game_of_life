@@ -7,6 +7,7 @@
 #include<vector>
 #include<time.h>
 #include <Windows.h>
+#include <conio.h>  // für getch() und kbhit()
 
 //unsere includes 
 #include<random>
@@ -61,6 +62,116 @@ public:
 		}
 		
 	};
+	void selectCells(World* matrix,int rows,int size)
+	{
+		int dirAD;
+		int dirWS;
+		char direction = ' ';
+
+		dirWS = (matrix->grid.size() - 1) / 2;
+		dirAD = (matrix->grid[0].size() - 1) / 2;
+		system("cls");
+		
+		cout << "Bewegt dir in der Matrix mit WASD und setzt die Zelle ein (druck q to quit)" << endl;
+		matrix->see();
+		while (direction != 'c')
+		{
+			if (_kbhit()) { // Prüfen, ob eine Taste gedrückt wurde
+				direction = _getch(); // Taste lesen
+				switch (direction) {
+					case 'w':
+						if(matrix->grid[dirWS][dirAD] == 1)
+						{
+							matrix->grid[dirWS][dirAD] = 1;
+						}
+						
+						else 
+						{
+							matrix->grid[dirWS][dirAD] = 0;
+						}
+						dirWS = dirWS - 1;
+						if (dirWS == -1)
+							{
+								dirWS = rows -1;	
+							} 
+						matrix->grid[dirWS][dirAD] = 2;
+
+						system("cls");
+						matrix->see();
+						break;
+					case 'a':
+						if(matrix->grid[dirWS][dirAD] == 1)
+						{
+							matrix->grid[dirWS][dirAD] = 1;
+						}
+						
+						else 
+						{
+							matrix->grid[dirWS][dirAD] = 0;
+						}
+						dirAD = dirAD - 1;
+						if (dirAD == -1)
+							{
+								dirAD = size - 1;	
+							} 
+						matrix->grid[dirWS][dirAD] = 2;
+
+						system("cls");
+						matrix->see();
+						break;
+					case 's':
+					if(matrix->grid[dirWS][dirAD] == 1)
+						{
+							matrix->grid[dirWS][dirAD] = 1;
+						}
+						
+						else 
+						{
+							matrix->grid[dirWS][dirAD] = 0;
+						}
+						dirWS = dirWS + 1;
+						if (dirWS == rows)
+							{
+								dirWS = 0;	
+							} 
+						matrix->grid[dirWS][dirAD] = 2;
+
+						system("cls");
+						matrix->see();
+						break;
+					case 'd':
+						if(matrix->grid[dirWS][dirAD] == 1)
+						{
+							matrix->grid[dirWS][dirAD] = 1;
+						}
+						
+						else 
+						{
+							matrix->grid[dirWS][dirAD] = 0;
+						}
+						dirAD = dirAD + 1;
+						if (dirAD == size)
+							{
+								dirAD = 0;	
+							} 
+						matrix->grid[dirWS][dirAD] = 2;
+
+						system("cls");
+						matrix->see();
+						break;
+					case 'p':
+						matrix->grid[dirWS][dirAD] = 1;
+						system("cls");
+						matrix->see();
+						break;
+					case 'c':
+						cout << "Let the games beginn!!!!" << endl;
+					default:
+						break;
+				}
+			}
+		}
+	}
 	void setMid(World* world)
 	{	
 		int startx = (world->grid[0].size() - 1 ) / 2 ;
