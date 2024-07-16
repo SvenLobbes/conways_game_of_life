@@ -1,103 +1,97 @@
 #include"Header.h"
-#include <iostream>
-#include <conio.h>  // für getch() und kbhit()
 
+void display_menu(){
+	cout << "|-------------------------------------------------------------|\n";
+	cout << "|                      Conway's Game of Life                  |\n";
+	cout << "|                                                             |\n";
+	cout << "| Enter s to start automated Simulation                       |\n";
+	cout << "| Enter c to start custom Simulation                          |\n";
+	cout << "| Enter q to quit                                             |\n";
+	cout << "|                                                             |\n";
+	cout << "|                         Software by                         |\n";
+	cout << "|           Tommaso Rubini, Andre SURNAME, Sven Lobbes        |\n";
+	cout << "|                        IT For Engineers                     |\n";
+	cout << "|-------------------------------------------------------------|\n";
+
+}
 
 int main() {
 	//Hier den Seed f�r Zufallszahlen
 	int size;
 	int rows;
 	int millisecs;
-	int mode;
-	
-	cout << "Gib mir die Size von Feld:\n";
-	cin >> size;
-	cout << "Gib mir die Rows vom Feld:\n";
-	cin >> rows;
 
-	World* matrix = new World(rows,size);
-/*
-	starty = (size-1) / 2;
-	startx = (rows-1) / 2 ;
-	matrix->grid[startx][starty] = 1;
-	matrix->see();
-*/
-	matrix->setMid(matrix);
+	char input;
 
+	display_menu();
+	cin >> input;
 
+	if(input == 's' || input == 'c'){ //AUTOMATED SIMULATION (RANDOM)
 
+		//Abfrage der Größen benutzerdefiniert -> evtl. später input abfangen
+		cout << "Gib mir die Size von Feld:\n";
+		cin >> size;
+		cout << "Gib mir die Rows vom Feld:\n";
+		cin >> rows;
+		cout << "Gib mir die Intervallzeiten in Sekunden:\n";
+		cin >> millisecs; 
+		millisecs = millisecs * 1000; //umrechnung in millisecs for Sleep()
 
-using namespace std;
+		//Erstellt eine Instanz der Klasse Welt
+		World* grid = new World(size, rows);
 
-/*
-    char direction = ' ';
-    cout << "Use WASD keys to navigate (press 'q' to quit):" << endl;
-
-    while (direction != 'q') {
-        if (_kbhit()) { // Prüfen, ob eine Taste gedrückt wurde
-            direction = _getch(); // Taste lesen
-            switch (direction) {
-                case 'w':
-                    cout << "Moving Up" << endl;
-                    break;
-                case 'a':
-                    cout << "Moving Left" << endl;
-                    break;
-                case 's':
-                    cout << "Moving Down" << endl;
-                    break;
-                case 'd':
-                    cout << "Moving Right" << endl;
-                    break;
-                case 'q':
-                    cout << "Quitting" << endl;
-                    break;
-                default:
-                    break;
-            }
-        }
-    
-}
-
-	
-	cout << "Gib mir die Intervallzeiten in Sekunden:\n";
-	cin >> millisecs; 
-	cout << "Debug Mode? 0 = No und 1 = yes\n";
-	cin >> mode;
-	millisecs = millisecs * 1000; //umrechnung in millisecs for Sleep()
-
-	//Erstellt eine Instanz der Klasse Welt
-	World* grid = new World(size, rows);
+		if (input == 'c')
+		{
+			//in the custom simulation case, we have to wipe the grid
+			//and let the user pick the figures
 
 
-	while (true) {
 
-		//zeigt die Welt an
-		grid->see();
+			//wipe grid
+			grid->clear_grid();
 
-		//updatet die Welt
-		grid->update();
+			//INSERT TOMMASO PROCEDURE for selecting own cells
+			grid->setMid(grid);
+			grid->selectCells(grid,rows,size);
 
-		//wartet 2 Sekunden
-		Sleep(millisecs);
+
+		}
 		
 
-		//added custom mode
-		if(mode == 0){
+
+		while (true) {
+
+			//zeigt die Welt an
+			grid->see();
+			grid->get_stats(); // custom function by sven
+		
+
+			//updatet die Welt
+			grid->update();
+		
+			if(grid->last_generation){
+				
+				//grid->get_stats();
+				cout << "Simulation beendet, das ist die letzte Generation:\n";
+
+				break;
+			}
+
+			//wartet 2 Sekunden
+			Sleep(millisecs);
+		
 			//L�scht die alte Konsolenanzeige
 			system("cls");
+		    
 		}
-		else if (mode == 1)
-		{
-			cout << "                  ";
-			cout << endl; 
-		}
-		
-
-		
-
-
 	}
-	*/
+	else if (input == 'q'){
+		return 0; //user wanted to close program
+	}
+
+	
+
+
+	return 0; 
 	
 }
